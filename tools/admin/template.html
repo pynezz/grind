@@ -1,0 +1,329 @@
+<title>Grind Admin</title>
+<style>
+  :root {
+    --bg: #F3F5F6;
+    --surface: #FFFFFF;
+    --surface-sunken: #EBEEF0;
+    --border: #DCE2E6;
+    --text: #12181C;
+    --text-dim: #5B6B74;
+    --accent: #2F6FEF;
+    --accent-dim: #E4ECFE;
+    --pass: #1F9D5C;
+    --pass-dim: #E1F5EA;
+    --fail: #D3363B;
+    --fail-dim: #FBE6E6;
+    --warn: #B8790E;
+    --warn-dim: #FBEEDB;
+    --shadow: 0 1px 2px rgba(20, 30, 40, 0.06), 0 8px 24px -12px rgba(20, 30, 40, 0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1418;
+      --surface: #171D22;
+      --surface-sunken: #10151A;
+      --border: #2A333A;
+      --text: #E7EDF0;
+      --text-dim: #8FA0AA;
+      --accent: #5B93FF;
+      --accent-dim: #1B2740;
+      --pass: #3FBF7F;
+      --pass-dim: #133226;
+      --fail: #E5484D;
+      --fail-dim: #3A1B1C;
+      --warn: #F0A93B;
+      --warn-dim: #3A2C10;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0F1418;
+    --surface: #171D22;
+    --surface-sunken: #10151A;
+    --border: #2A333A;
+    --text: #E7EDF0;
+    --text-dim: #8FA0AA;
+    --accent: #5B93FF;
+    --accent-dim: #1B2740;
+    --pass: #3FBF7F;
+    --pass-dim: #133226;
+    --fail: #E5484D;
+    --fail-dim: #3A1B1C;
+    --warn: #F0A93B;
+    --warn-dim: #3A2C10;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 32px 20px 64px;
+  }
+
+  code, .mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; font-variant-numeric: tabular-nums; }
+
+  .wrap { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 4px; }
+  .brand h1 { margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+  .brand h1 .glyph { color: var(--accent); }
+  .brand p { margin: 0; color: var(--text-dim); font-size: 13px; max-width: 56ch; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .pill.warn { background: var(--warn-dim); color: var(--warn); }
+  .pill.pass { background: var(--pass-dim); color: var(--pass); }
+  .pill.fail { background: var(--fail-dim); color: var(--fail); }
+
+  .banner {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--warn-dim); border: 1px solid var(--warn); color: var(--warn);
+    border-radius: 10px; padding: 10px 14px; font-size: 12.5px; line-height: 1.5;
+  }
+  .banner strong { color: var(--warn); }
+
+  section h2 {
+    font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-dim); margin: 0 0 12px;
+  }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: var(--shadow); padding: 18px 20px;
+  }
+
+  form.add-site { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 12px; align-items: end; }
+  .field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .field label { font-size: 11.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+  .field .hint { font-size: 11px; color: var(--text-dim); }
+  .field input {
+    background: var(--surface-sunken); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 13px; color: var(--text); font-family: inherit;
+    width: 100%;
+  }
+  .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .field input.mono { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+
+  button {
+    font: inherit; cursor: pointer; border-radius: 8px; border: 1px solid transparent;
+    padding: 9px 16px; font-size: 13px; font-weight: 600;
+  }
+  button.primary { background: var(--accent); color: white; }
+  button.primary:hover { filter: brightness(1.06); }
+  button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.ghost { background: transparent; border-color: var(--border); color: var(--text-dim); }
+  button.ghost:hover { color: var(--text); border-color: var(--text-dim); }
+  button.danger { background: transparent; border-color: var(--border); color: var(--fail); }
+  button.danger:hover { background: var(--fail-dim); border-color: var(--fail); }
+
+  .form-error { grid-column: 1 / -1; font-size: 12px; color: var(--fail); min-height: 1em; }
+
+  .sites { display: flex; flex-direction: column; gap: 10px; }
+
+  .site-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .site-row .label { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .site-row .metric { display: flex; flex-direction: column; gap: 1px; }
+  .site-row .metric .num { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; font-size: 14px; font-weight: 600; }
+  .site-row .metric .lbl { font-size: 10.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+  .site-row .actions { display: flex; gap: 6px; justify-self: end; }
+  .site-row .actions button { padding: 6px 10px; font-size: 12px; }
+
+  .empty {
+    text-align: center; padding: 32px 16px; color: var(--text-dim); font-size: 13px;
+    border: 1px dashed var(--border); border-radius: 12px; background: var(--surface);
+  }
+
+  footer { text-align: center; font-size: 11.5px; color: var(--text-dim); padding-top: 8px; }
+  footer code { color: var(--text-dim); }
+
+  @media (max-width: 640px) {
+    form.add-site, .site-row { grid-template-columns: 1fr; }
+    .site-row .actions { justify-self: start; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1><span class="glyph">⌁</span> grind admin</h1>
+      <p>Register demo protected URLs: a free-tier request count and a puzzle difficulty for each. This configures what a work-leg demo would read once the mint (M1) and gate (M2) exist &mdash; nothing here is enforced yet.</p>
+    </div>
+    <span class="pill warn" id="mode-pill">config only</span>
+  </header>
+
+  <div class="banner" id="unimplemented-banner">
+    <span>&#9888;</span>
+    <span><strong>Not wired to a live gate.</strong> PLAN.md milestones M1 (mint) and M2 (gate) aren&rsquo;t built yet, so nothing actually rate-limits these URLs. This page only manages the configuration a future demo would read &mdash; see the <code class="mono">grind</code> status dashboard for build progress.</span>
+  </div>
+
+  <section>
+    <h2>Add a protected URL</h2>
+    <div class="card">
+      <form class="add-site" id="add-form">
+        <div class="field">
+          <label for="f-label">URL / asset path</label>
+          <input class="mono" id="f-label" name="label" placeholder="pynezz.dev/static/*" required />
+        </div>
+        <div class="field">
+          <label for="f-free">Free tier (requests)</label>
+          <input class="mono" id="f-free" name="freeTier" type="number" min="0" step="1" value="20" required />
+        </div>
+        <div class="field">
+          <label for="f-diff">Difficulty (d bits)</label>
+          <input class="mono" id="f-diff" name="difficulty" type="number" min="1" max="32" step="1" value="5" required />
+          <span class="hint">d=5 &asymp; 2s/core, argon2id 64&nbsp;MiB</span>
+        </div>
+        <button class="primary" type="submit" id="add-btn">Add site</button>
+        <div class="form-error" id="form-error"></div>
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <h2>Configured sites</h2>
+    <div class="sites" id="sites-list">
+      <div class="empty">Loading&hellip;</div>
+    </div>
+  </section>
+
+  <footer>
+    Stored in this artifact&rsquo;s shared <code>db</code> &mdash; every viewer with this link reads and writes the same list.
+  </footer>
+</div>
+
+<script>
+(function () {
+  const EXAMPLE_SITES = [
+    { id: 'example-1', label: 'pynezz.dev/static/*', freeTier: 20, difficulty: 5, createdAt: 0 },
+    { id: 'example-2', label: 'api.example.dev/v1/quote', freeTier: 5, difficulty: 8, createdAt: 1 },
+  ];
+
+  const listEl = document.getElementById('sites-list');
+  const form = document.getElementById('add-form');
+  const addBtn = document.getElementById('add-btn');
+  const errEl = document.getElementById('form-error');
+  const modePill = document.getElementById('mode-pill');
+
+  function renderEmpty(msg) {
+    listEl.innerHTML = `<div class="empty">${msg}</div>`;
+  }
+
+  function renderSites(docs, opts) {
+    opts = opts || {};
+    if (!docs.length) {
+      renderEmpty('No sites configured yet. Add one above.');
+      return;
+    }
+    listEl.innerHTML = docs.map(d => `
+      <div class="site-row" data-id="${d.id}">
+        <span class="label">${escapeHtml(d.label)}</span>
+        <span class="metric"><span class="num">${d.freeTier}</span><span class="lbl">free requests</span></span>
+        <span class="metric"><span class="num">d=${d.difficulty}</span><span class="lbl">difficulty</span></span>
+        <span class="actions">
+          <button class="danger" data-action="delete" ${opts.readOnly ? 'disabled' : ''}>Delete</button>
+        </span>
+      </div>
+    `).join('');
+
+    if (!opts.readOnly) {
+      listEl.querySelectorAll('[data-action="delete"]').forEach(btn => {
+        btn.addEventListener('click', () => onDelete(btn.closest('.site-row').dataset.id));
+      });
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  let sitesCollection = null;
+  let onDelete = () => {};
+
+  async function init() {
+    let db = null;
+    try {
+      db = await claude.use('db');
+    } catch (e) {
+      db = null;
+    }
+
+    if (!db) {
+      modePill.textContent = 'preview — example data';
+      renderSites(EXAMPLE_SITES, { readOnly: true });
+      form.querySelectorAll('input').forEach(el => el.disabled = true);
+      addBtn.disabled = true;
+      errEl.textContent = 'Live storage isn’t available in this preview — showing example rows. Open the published page to manage real entries.';
+      return;
+    }
+
+    sitesCollection = db.collection('sites');
+
+    onDelete = async (id) => {
+      try {
+        await sitesCollection.doc(id).delete();
+      } catch (e) {
+        errEl.textContent = 'Could not delete: ' + (e && e.message ? e.message : e);
+      }
+    };
+
+    sitesCollection.orderBy('createdAt', 'asc').onSnapshot(
+      (snap) => {
+        const docs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderSites(docs);
+      },
+      (err) => {
+        renderEmpty('Could not load sites: ' + err.message);
+      }
+    );
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      errEl.textContent = '';
+      const label = document.getElementById('f-label').value.trim();
+      const freeTier = parseInt(document.getElementById('f-free').value, 10);
+      const difficulty = parseInt(document.getElementById('f-diff').value, 10);
+
+      if (!label) { errEl.textContent = 'A URL or asset path is required.'; return; }
+      if (!Number.isFinite(freeTier) || freeTier < 0) { errEl.textContent = 'Free tier must be a non-negative number.'; return; }
+      if (!Number.isFinite(difficulty) || difficulty < 1 || difficulty > 32) { errEl.textContent = 'Difficulty must be between 1 and 32 bits.'; return; }
+
+      addBtn.disabled = true;
+      try {
+        await sitesCollection.add({ label, freeTier, difficulty, createdAt: Date.now() });
+        form.reset();
+        document.getElementById('f-free').value = 20;
+        document.getElementById('f-diff').value = 5;
+      } catch (e) {
+        errEl.textContent = 'Could not save: ' + (e && e.message ? e.message : e);
+      } finally {
+        addBtn.disabled = false;
+      }
+    });
+  }
+
+  init();
+})();
+</script>

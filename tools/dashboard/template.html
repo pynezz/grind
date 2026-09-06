@@ -1,0 +1,649 @@
+<title>Grind</title>
+<style>
+  :root {
+    --bg: #F3F5F6;
+    --surface: #FFFFFF;
+    --surface-sunken: #EBEEF0;
+    --border: #DCE2E6;
+    --text: #12181C;
+    --text-dim: #5B6B74;
+    --accent: #2F6FEF;
+    --accent-dim: #E4ECFE;
+    --pass: #1F9D5C;
+    --pass-dim: #E1F5EA;
+    --fail: #D3363B;
+    --fail-dim: #FBE6E6;
+    --warn: #B8790E;
+    --warn-dim: #FBEEDB;
+    --shadow: 0 1px 2px rgba(20, 30, 40, 0.06), 0 8px 24px -12px rgba(20, 30, 40, 0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0F1418;
+      --surface: #171D22;
+      --surface-sunken: #10151A;
+      --border: #2A333A;
+      --text: #E7EDF0;
+      --text-dim: #8FA0AA;
+      --accent: #5B93FF;
+      --accent-dim: #1B2740;
+      --pass: #3FBF7F;
+      --pass-dim: #133226;
+      --fail: #E5484D;
+      --fail-dim: #3A1B1C;
+      --warn: #F0A93B;
+      --warn-dim: #3A2C10;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0F1418;
+    --surface: #171D22;
+    --surface-sunken: #10151A;
+    --border: #2A333A;
+    --text: #E7EDF0;
+    --text-dim: #8FA0AA;
+    --accent: #5B93FF;
+    --accent-dim: #1B2740;
+    --pass: #3FBF7F;
+    --pass-dim: #133226;
+    --fail: #E5484D;
+    --fail-dim: #3A1B1C;
+    --warn: #F0A93B;
+    --warn-dim: #3A2C10;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 32px 20px 64px;
+  }
+
+  code, .mono, .num {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .brand h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .brand h1 .glyph { color: var(--accent); }
+
+  .brand p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 13px;
+    max-width: 46ch;
+  }
+
+  .header-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .updated {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+  }
+
+  .pill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .pill.pass { background: var(--pass-dim); color: var(--pass); }
+  .pill.fail { background: var(--fail-dim); color: var(--fail); }
+  .pill.warn { background: var(--warn-dim); color: var(--warn); }
+  .pill.neutral { background: var(--surface-sunken); color: var(--text-dim); border-color: var(--border); }
+
+  /* ---------- milestones ---------- */
+  section h2 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    margin: 0 0 12px;
+  }
+
+  .milestones {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .milestone {
+    padding: 14px 14px 16px;
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+  }
+  .milestone:first-child { border-left: none; }
+
+  .milestone .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .milestone .id {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .milestone .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .milestone.done .dot { background: var(--pass); }
+  .milestone.progress .dot { background: var(--warn); }
+  .milestone.planned .dot { background: var(--border); }
+
+  .milestone .title {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .milestone.planned .title { color: var(--text-dim); font-weight: 500; }
+
+  .milestone .note {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+
+  .milestone .bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .milestone.done .bar { background: var(--pass); }
+  .milestone.progress .bar { background: var(--warn); }
+  .milestone.planned .bar { background: transparent; }
+
+  /* ---------- stat tiles ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat .value {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+  }
+  .stat .value.pass { color: var(--pass); }
+  .stat .value.fail { color: var(--fail); }
+
+  .stat .label {
+    font-size: 11.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- packages ---------- */
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+
+  .pkg-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .pkg-card .pkg-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-sunken);
+  }
+
+  .pkg-card .pkg-head .name {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .pkg-card .pkg-head .count {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .pkg-card .test-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    border-top: 1px solid var(--border);
+  }
+  .pkg-card .test-row:first-of-type { border-top: none; }
+
+  .pkg-card .test-row .tname {
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pkg-card .test-row .telapsed {
+    color: var(--text-dim);
+    flex-shrink: 0;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 8px;
+    display: inline-block;
+  }
+  .status-dot.pass { background: var(--pass); }
+  .status-dot.fail { background: var(--fail); }
+
+  .pkg-empty {
+    padding: 14px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ---------- benchmark chart ---------- */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 20px 12px;
+  }
+
+  .chart-card .chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .chart-card .chart-head .sub {
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+    color: var(--text-dim);
+  }
+  .legend .item { display: flex; align-items: center; gap: 5px; }
+  .legend .swatch { width: 9px; height: 9px; border-radius: 2px; }
+
+  .chart-scroll { overflow-x: auto; }
+
+  svg text { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+
+  /* ---------- run history ---------- */
+  .history-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+
+  table.history {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    min-width: 560px;
+  }
+
+  table.history th, table.history td {
+    text-align: left;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  table.history th {
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    background: var(--surface-sunken);
+  }
+
+  table.history td.num { font-family: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; }
+  table.history tbody tr:last-child td { border-bottom: none; }
+
+  footer {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    padding-top: 8px;
+  }
+  footer code { color: var(--text-dim); }
+
+  @media (max-width: 720px) {
+    .milestones { grid-template-columns: repeat(2, 1fr); }
+    .milestone { border-left: none; border-top: 1px solid var(--border); }
+    .milestone:first-child, .milestone:nth-child(2) { border-top: none; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1><span class="glyph">⌁</span> grind</h1>
+      <p>Continuous test &amp; benchmark status for the argon2id-over-hashcash work-leg library, checked against the milestones in PLAN.md.</p>
+    </div>
+    <div class="header-meta">
+      <span class="pill" id="overall-pill">&nbsp;</span>
+      <span class="updated" id="updated-at"></span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Milestones</h2>
+    <div class="milestones" id="milestones"></div>
+  </section>
+
+  <section>
+    <h2>Latest run</h2>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section>
+    <h2>Test results by package</h2>
+    <div class="packages" id="packages"></div>
+  </section>
+
+  <section>
+    <div class="chart-card">
+      <div class="chart-head">
+        <h2 style="margin:0;">Benchmark: argon2id solve time vs. difficulty</h2>
+        <span class="sub">BenchmarkSolve, 4 MiB / t=1 / p=1 &mdash; ns per op, log scale</span>
+      </div>
+      <div class="legend" id="chart-legend"></div>
+      <div class="chart-scroll">
+        <svg id="chart" width="1000" height="260" viewBox="0 0 1000 260"></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Run history</h2>
+    <div class="history-scroll">
+      <table class="history">
+        <thead>
+          <tr><th>Run</th><th>Status</th><th>Packages</th><th>Tests</th><th>Duration</th></tr>
+        </thead>
+        <tbody id="history-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Collected by <code>tools/dashboard/collect.py</code> running <code>go test ./... -json</code> and <code>go test -bench BenchmarkSolve</code>. Republished on each cycle &mdash; not a live subscription.
+  </footer>
+</div>
+
+<script id="run-history" type="application/json">__RUN_HISTORY_JSON__</script>
+<script id="milestone-data" type="application/json">__MILESTONES_JSON__</script>
+
+<script>
+(function () {
+  const RUNS = JSON.parse(document.getElementById('run-history').textContent);
+  const MILESTONES = JSON.parse(document.getElementById('milestone-data').textContent);
+  const latest = RUNS[RUNS.length - 1];
+
+  const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  // ---------- header ----------
+  const pill = document.getElementById('overall-pill');
+  if (latest) {
+    pill.className = 'pill ' + (latest.overall === 'pass' ? 'pass' : 'fail');
+    pill.textContent = latest.overall === 'pass' ? 'All packages passing' : 'Failing';
+    document.getElementById('updated-at').textContent =
+      'Last run ' + new Date(latest.ts).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+  } else {
+    pill.className = 'pill neutral';
+    pill.textContent = 'No runs yet';
+  }
+
+  // ---------- milestones ----------
+  const msEl = document.getElementById('milestones');
+  msEl.innerHTML = MILESTONES.map(m => `
+    <div class="milestone ${m.status}">
+      <div class="bar"></div>
+      <div class="row">
+        <span class="id">${m.id}</span>
+        <span class="dot"></span>
+      </div>
+      <div class="title">${m.title}</div>
+      <div class="note">${m.note}</div>
+    </div>
+  `).join('');
+
+  // ---------- stats ----------
+  const statsEl = document.getElementById('stats');
+  if (latest) {
+    const totalTests = latest.packages.reduce((a, p) => a + p.total, 0);
+    const totalPassed = latest.packages.reduce((a, p) => a + p.passed, 0);
+    const activePkgs = latest.packages.filter(p => p.total > 0).length;
+    const tiles = [
+      { label: 'Packages with tests', value: activePkgs, cls: '' },
+      { label: 'Tests run', value: totalTests, cls: '' },
+      { label: 'Tests passed', value: totalPassed + ' / ' + totalTests, cls: totalPassed === totalTests ? 'pass' : 'fail' },
+      { label: 'Run duration', value: (latest.durationMs / 1000).toFixed(2) + 's', cls: '' },
+      { label: 'Benchmarks tracked', value: latest.benchmarks.length, cls: '' },
+      { label: 'Total runs recorded', value: RUNS.length, cls: '' },
+    ];
+    statsEl.innerHTML = tiles.map(t => `
+      <div class="stat">
+        <div class="value ${t.cls}">${t.value}</div>
+        <div class="label">${t.label}</div>
+      </div>
+    `).join('');
+  }
+
+  // ---------- packages ----------
+  const pkgsEl = document.getElementById('packages');
+  if (latest) {
+    pkgsEl.innerHTML = latest.packages.map(p => `
+      <div class="pkg-card">
+        <div class="pkg-head">
+          <span class="name">${p.name}</span>
+          <span class="count">${p.total ? p.passed + ' / ' + p.total + ' pass' : 'no tests'}</span>
+        </div>
+        ${
+          p.tests.length
+            ? p.tests.map(t => `
+              <div class="test-row">
+                <span class="tname"><span class="status-dot ${t.status}"></span>${t.name}</span>
+                <span class="telapsed">${t.elapsedS != null ? t.elapsedS.toFixed(2) + 's' : ''}</span>
+              </div>
+            `).join('')
+            : `<div class="pkg-empty">stub package, not yet implemented (see PLAN.md milestones)</div>`
+        }
+      </div>
+    `).join('');
+  }
+
+  // ---------- benchmark chart ----------
+  const svg = document.getElementById('chart');
+  const legendEl = document.getElementById('chart-legend');
+  const seriesNames = [...new Set(RUNS.flatMap(r => r.benchmarks.map(b => b.name)))].sort();
+  const colors = [cssVar('--accent'), cssVar('--pass'), cssVar('--warn'), cssVar('--fail')];
+  const borderColor = cssVar('--border');
+  const dimColor = cssVar('--text-dim');
+
+  if (seriesNames.length && RUNS.length) {
+    const W = 1000, H = 260;
+    const padL = 64, padR = 20, padT = 16, padB = 34;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+
+    let allVals = [];
+    RUNS.forEach(r => r.benchmarks.forEach(b => allVals.push(b.nsPerOp)));
+    const logMin = Math.log10(Math.max(1, Math.min(...allVals) * 0.8));
+    const logMax = Math.log10(Math.max(...allVals) * 1.2);
+
+    const xFor = (i) => RUNS.length === 1 ? padL + plotW / 2 : padL + (i / (RUNS.length - 1)) * plotW;
+    const yFor = (v) => padT + plotH - ((Math.log10(v) - logMin) / (logMax - logMin)) * plotH;
+
+    let svgParts = [];
+
+    // gridlines + y labels (decades)
+    const startDecade = Math.floor(logMin);
+    const endDecade = Math.ceil(logMax);
+    for (let d = startDecade; d <= endDecade; d++) {
+      const v = Math.pow(10, d);
+      if (Math.log10(v) < logMin || Math.log10(v) > logMax) continue;
+      const y = yFor(v);
+      const msLabel = (v / 1e6 >= 1) ? (v / 1e6).toFixed(v / 1e6 < 10 ? 1 : 0) + 'ms' : Math.round(v) + 'ns';
+      svgParts.push(`<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="${borderColor}" stroke-width="1" />`);
+      svgParts.push(`<text x="${padL - 8}" y="${y + 4}" font-size="10.5" fill="${dimColor}" text-anchor="end">${msLabel}</text>`);
+    }
+
+    // x labels (run index)
+    RUNS.forEach((r, i) => {
+      if (RUNS.length > 1 && i % Math.ceil(RUNS.length / 8) !== 0 && i !== RUNS.length - 1) return;
+      const x = xFor(i);
+      svgParts.push(`<text x="${x}" y="${H - padB + 18}" font-size="10.5" fill="${dimColor}" text-anchor="middle">#${i + 1}</text>`);
+    });
+
+    // series
+    seriesNames.forEach((name, si) => {
+      const color = colors[si % colors.length];
+      const pts = RUNS
+        .map((r, i) => {
+          const b = r.benchmarks.find(b => b.name === name);
+          return b ? [xFor(i), yFor(b.nsPerOp)] : null;
+        })
+        .filter(Boolean);
+      if (pts.length > 1) {
+        const path = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+        svgParts.push(`<path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />`);
+      }
+      pts.forEach(p => {
+        svgParts.push(`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.5" fill="${color}" />`);
+      });
+    });
+
+    svgParts.push(`<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="${borderColor}" stroke-width="1" />`);
+    svgParts.push(`<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="${borderColor}" stroke-width="1" />`);
+
+    svg.innerHTML = svgParts.join('\n');
+
+    legendEl.innerHTML = seriesNames.map((name, si) => `
+      <span class="item"><span class="swatch" style="background:${colors[si % colors.length]}"></span>${name} bits</span>
+    `).join('');
+  } else {
+    legendEl.textContent = 'No benchmark data yet.';
+  }
+
+  // ---------- history table ----------
+  const histBody = document.getElementById('history-body');
+  histBody.innerHTML = [...RUNS].reverse().map((r, idx) => {
+    const i = RUNS.length - idx;
+    const totalTests = r.packages.reduce((a, p) => a + p.total, 0);
+    const totalPassed = r.packages.reduce((a, p) => a + p.passed, 0);
+    const activePkgs = r.packages.filter(p => p.total > 0).length;
+    return `
+      <tr>
+        <td class="num">#${i}</td>
+        <td><span class="pill ${r.overall === 'pass' ? 'pass' : 'fail'}">${r.overall}</span></td>
+        <td class="num">${activePkgs}</td>
+        <td class="num">${totalPassed} / ${totalTests}</td>
+        <td class="num">${(r.durationMs / 1000).toFixed(2)}s</td>
+      </tr>
+    `;
+  }).join('');
+})();
+</script>

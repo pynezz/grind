@@ -1,0 +1,38 @@
+[
+  {
+    "id": "M0",
+    "title": "Library",
+    "status": "done",
+    "note": "Pure Go: puzzle (argon2id-over-hashcash challenge/solve/verify) and credit (signing/verification) packages, table-driven tests, a difficulty benchmark. No network code."
+  },
+  {
+    "id": "M1",
+    "title": "Mint, work leg only",
+    "status": "planned",
+    "note": "Single binary. POST /mint/work. In-process per-key counters, SQLite for durability. No payment leg yet."
+  },
+  {
+    "id": "M2",
+    "title": "Gate",
+    "status": "planned",
+    "note": "Caddy forward_auth endpoint borrowed from auth-gate. Token bucket per IP/ASN, 402 emission, credit verification, use burning."
+  },
+  {
+    "id": "M3",
+    "title": "Client",
+    "status": "planned",
+    "note": "WASM solver plus HTML interstitial, and a Go client library for non-browser agents."
+  },
+  {
+    "id": "M4",
+    "title": "Deploy on pynezz.dev",
+    "status": "planned",
+    "note": "Instrument solve times, credits minted, bucket hit rate, and work-path traffic share."
+  },
+  {
+    "id": "M5",
+    "title": "Paid leg",
+    "status": "planned",
+    "note": "Cashu mint for bearer credits, priced against observed work cost. x402 compatibility."
+  }
+]

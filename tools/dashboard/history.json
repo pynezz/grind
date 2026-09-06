@@ -1,0 +1,606 @@
+[
+  {
+    "ts": "2026-09-06T13:01:52+0200",
+    "overall": "pass",
+    "durationMs": 63,
+    "packages": [
+      {
+        "name": "client",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/gate",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/mint",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "credit",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeRejectsMalformed",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestEncodeDecodeRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestMintAndVerify",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestSignAndVerifyProof",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsExpired",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsTampering",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongNonce",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "internal/crockford",
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeNormalizesAmbiguousChars",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "puzzle",
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestSolveAndVerify",
+            "status": "pass",
+            "elapsedS": 0.43
+          },
+          {
+            "name": "TestSolveRespectsContextCancellation",
+            "status": "pass",
+            "elapsedS": 0.05
+          },
+          {
+            "name": "TestVerifyRejectsExpiredChallenge",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyRejectsWrongSolution",
+            "status": "pass",
+            "elapsedS": 0.01
+          }
+        ]
+      }
+    ],
+    "benchmarks": [
+      {
+        "name": "d=4",
+        "nsPerOp": 49905250
+      },
+      {
+        "name": "d=6",
+        "nsPerOp": 10955873
+      },
+      {
+        "name": "d=8",
+        "nsPerOp": 333752881
+      },
+      {
+        "name": "d=10",
+        "nsPerOp": 2047050572
+      }
+    ]
+  },
+  {
+    "ts": "2026-09-06T13:02:05+0200",
+    "overall": "pass",
+    "durationMs": 73,
+    "packages": [
+      {
+        "name": "client",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/gate",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/mint",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "credit",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeRejectsMalformed",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestEncodeDecodeRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestMintAndVerify",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestSignAndVerifyProof",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsExpired",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsTampering",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongNonce",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "internal/crockford",
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeNormalizesAmbiguousChars",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "puzzle",
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestSolveAndVerify",
+            "status": "pass",
+            "elapsedS": 0.43
+          },
+          {
+            "name": "TestSolveRespectsContextCancellation",
+            "status": "pass",
+            "elapsedS": 0.05
+          },
+          {
+            "name": "TestVerifyRejectsExpiredChallenge",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyRejectsWrongSolution",
+            "status": "pass",
+            "elapsedS": 0.01
+          }
+        ]
+      }
+    ],
+    "benchmarks": [
+      {
+        "name": "d=4",
+        "nsPerOp": 55852239
+      },
+      {
+        "name": "d=6",
+        "nsPerOp": 39254582
+      },
+      {
+        "name": "d=8",
+        "nsPerOp": 278917016
+      },
+      {
+        "name": "d=10",
+        "nsPerOp": 1366979730
+      }
+    ]
+  },
+  {
+    "ts": "2026-09-06T13:02:17+0200",
+    "overall": "pass",
+    "durationMs": 64,
+    "packages": [
+      {
+        "name": "client",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/gate",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/mint",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "credit",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeRejectsMalformed",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestEncodeDecodeRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestMintAndVerify",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestSignAndVerifyProof",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsExpired",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsTampering",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongNonce",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "internal/crockford",
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeNormalizesAmbiguousChars",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "puzzle",
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestSolveAndVerify",
+            "status": "pass",
+            "elapsedS": 0.43
+          },
+          {
+            "name": "TestSolveRespectsContextCancellation",
+            "status": "pass",
+            "elapsedS": 0.05
+          },
+          {
+            "name": "TestVerifyRejectsExpiredChallenge",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyRejectsWrongSolution",
+            "status": "pass",
+            "elapsedS": 0.01
+          }
+        ]
+      }
+    ],
+    "benchmarks": [
+      {
+        "name": "d=4",
+        "nsPerOp": 60168439
+      },
+      {
+        "name": "d=6",
+        "nsPerOp": 159761826
+      },
+      {
+        "name": "d=8",
+        "nsPerOp": 161102751
+      },
+      {
+        "name": "d=10",
+        "nsPerOp": 2492490424
+      }
+    ]
+  },
+  {
+    "ts": "2026-09-06T13:07:06+0200",
+    "overall": "pass",
+    "durationMs": 64,
+    "packages": [
+      {
+        "name": "client",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/gate",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "cmd/mint",
+        "total": 0,
+        "passed": 0,
+        "failed": 0,
+        "elapsedS": 0.0,
+        "tests": []
+      },
+      {
+        "name": "credit",
+        "total": 9,
+        "passed": 9,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeRejectsMalformed",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestEncodeDecodeRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestMintAndVerify",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestSignAndVerifyProof",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsExpired",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsTampering",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyMintRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongKey",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyProofRejectsWrongNonce",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "internal/crockford",
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestDecodeNormalizesAmbiguousChars",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestRoundTrip",
+            "status": "pass",
+            "elapsedS": 0
+          }
+        ]
+      },
+      {
+        "name": "puzzle",
+        "total": 4,
+        "passed": 4,
+        "failed": 0,
+        "elapsedS": 0,
+        "tests": [
+          {
+            "name": "TestSolveAndVerify",
+            "status": "pass",
+            "elapsedS": 0.43
+          },
+          {
+            "name": "TestSolveRespectsContextCancellation",
+            "status": "pass",
+            "elapsedS": 0.05
+          },
+          {
+            "name": "TestVerifyRejectsExpiredChallenge",
+            "status": "pass",
+            "elapsedS": 0
+          },
+          {
+            "name": "TestVerifyRejectsWrongSolution",
+            "status": "pass",
+            "elapsedS": 0.01
+          }
+        ]
+      }
+    ],
+    "benchmarks": [
+      {
+        "name": "d=4",
+        "nsPerOp": 60256089
+      },
+      {
+        "name": "d=6",
+        "nsPerOp": 64908481
+      },
+      {
+        "name": "d=8",
+        "nsPerOp": 222159288
+      },
+      {
+        "name": "d=10",
+        "nsPerOp": 1434928019
+      }
+    ]
+  }
+]
